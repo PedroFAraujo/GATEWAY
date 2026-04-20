@@ -26,6 +26,33 @@ spring:
               - uri: http://localhost:8084
 
     gateway:
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+
+      default-filters:
+        - name: Retry
+          args:
+            retries: 3
+            statuses: BAD_GATEWAY, SERVICE_UNAVAILABLE, NOT_FOUND
+            methods: GET, PUT, DELETE
+            backoff:
+              firstBackoff: 10ms
+              maxBackoff: 50ms
+              factor: 2
+              basedOnPreviousValue: true
+
       routes:
 
         - id: login
@@ -47,18 +74,6 @@ spring:
           uri: lb://cep-service
           predicates:
             - Path=/fatec/cep/**
-
-      default-filters:
-        - name: Retry
-          args:
-            retries: 3
-            statuses: BAD_GATEWAY, SERVICE_UNAVAILABLE, NOT_FOUND
-            methods: GET, POST
-            backoff:
-              firstBackoff: 10ms
-              maxBackoff: 50ms
-              factor: 2
-              basedOnPreviousValue: true
 
 logging:
   level:
