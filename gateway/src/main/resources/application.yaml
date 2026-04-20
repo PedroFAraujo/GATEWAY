@@ -13,17 +13,14 @@ spring:
       client:
         simple:
           instances:
-            login-service:
+            auth-service:
               - uri: http://localhost:8081
 
-            cliente-service:
+            cep-service:
               - uri: http://localhost:8082
 
-            cep-service:
-              - uri: http://localhost:8083
-
             produto-service:
-              - uri: http://localhost:8084
+              - uri: http://localhost:8083
 
     gateway:
 
@@ -55,15 +52,10 @@ spring:
 
       routes:
 
-        - id: login
-          uri: lb://login-service
+        - id: auth
+          uri: lb://auth-service
           predicates:
-            - Path=/fatec/login/**
-
-        - id: cliente
-          uri: lb://cliente-service
-          predicates:
-            - Path=/fatec/clientes/**
+            - Path=/fatec/auth/**
 
         - id: produto
           uri: lb://produto-service
