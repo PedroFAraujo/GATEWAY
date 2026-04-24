@@ -17,6 +17,7 @@ HELP.md
 ### IntelliJ IDEA ###
 .ideaHELP.md
 target/
+.mvn/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**

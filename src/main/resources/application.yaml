@@ -1,0 +1,82 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+
+  cors:
+    url:
+      - localhost:3000
+      - http://localhost:3000
+      - https://localhost:3000
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081
+
+  cloud:
+    compatibility-verifier:
+      enabled: false
+
+    discovery:
+      client:
+        simple:
+          instances:
+
+            login:
+              - uri: http://localhost:8081
+
+            cliente:
+              - uri: http://localhost:8082
+
+            produto:
+              - uri: http://localhost:8083
+
+            cep:
+              - uri: http://localhost:8084
+
+    gateway:
+      routes:
+
+        - id: login
+          uri: lb://login
+          predicates:
+            - Path=/auth/**
+
+        - id: cliente
+          uri: lb://cliente
+          predicates:
+            - Path=/clientes/**
+          filters:
+            - StripPrefix=1
+
+        - id: produto
+          uri: lb://produto
+          predicates:
+            - Path=/produtos/**,/compras/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+              args:
+                retries: 3
+                statuses: BAD_GATEWAY, SERVICE_UNAVAILABLE, NOT_FOUND
+                methods: GET, POST
+                backoff:
+                  firstBackoff: 10ms
+                  maxBackoff: 50ms
+                  factor: 2
+                  basedOnPreviousValue: true
+
+        - id: cep
+          uri: lb://cep
+          predicates:
+            - Path=/cep/**
+          filters:
+            - StripPrefix=1
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
