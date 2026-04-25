@@ -30,13 +30,10 @@ spring:
               - uri: http://localhost:8081
 
             cliente:
-              - uri: http://localhost:8082
+              - uri: http://localhost:8083
 
             produto:
               - uri: http://localhost:8083
-
-            cep:
-              - uri: http://localhost:8084
 
     gateway:
       routes:
@@ -69,13 +66,6 @@ spring:
                   maxBackoff: 50ms
                   factor: 2
                   basedOnPreviousValue: true
-
-        - id: cep
-          uri: lb://cep
-          predicates:
-            - Path=/cep/**
-          filters:
-            - StripPrefix=1
 
 logging:
   level:
