@@ -1,4 +1,4 @@
-package io.github.fatec.gateway.config;
+package com.pabloepedro.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

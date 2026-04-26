@@ -41,7 +41,7 @@ spring:
         - id: login
           uri: lb://login
           predicates:
-            - Path=/auth/**
+            - Path=/login/**
 
         - id: cliente
           uri: lb://cliente
@@ -53,7 +53,7 @@ spring:
         - id: produto
           uri: lb://produto
           predicates:
-            - Path=/produtos/**,/compras/**
+            - Path=/**
           filters:
             - StripPrefix=1
             - name: Retry

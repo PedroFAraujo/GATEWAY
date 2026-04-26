@@ -1,4 +1,4 @@
-package com.pabloepedro.gateway;
+package com.pabloepedro.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class RouteConfig {
 
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
 
-                        .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/login/**").permitAll()
 
                         .pathMatchers("/cep/**").permitAll()
 
